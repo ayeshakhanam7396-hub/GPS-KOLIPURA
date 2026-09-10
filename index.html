@@ -159,6 +159,14 @@
     .paper.c1 .questions.qcount-16 .q-card,.paper.c2 .questions.qcount-16 .q-card{display:grid;grid-template-rows:auto minmax(24px,auto) auto auto;align-content:start}
     .paper.c1 .questions.qcount-16 .trace-stack,.paper.c2 .questions.qcount-16 .trace-stack{overflow:hidden;align-self:end}
     .paper.c1 .questions.qcount-16 .practice-guides,.paper.c2 .questions.qcount-16 .practice-guides{align-self:end;margin-top:1px}
+    /* Keep the teacher's selected text size on BOTH A4 sides. These final
+       rules intentionally outrank the automatic fit modes, which may still
+       tighten pictures and spacing without shrinking the question text. */
+    .paper.a4-text-large.c1 .q-text{font-size:16px!important;line-height:1.16!important}.paper.a4-text-extra.c1 .q-text{font-size:18px!important;line-height:1.18!important}
+    .paper.a4-text-large.c2 .q-text{font-size:15px!important;line-height:1.16!important}.paper.a4-text-extra.c2 .q-text{font-size:17px!important;line-height:1.18!important}
+    .paper.a4-text-large.c3 .q-text,.paper.a4-text-large.c4 .q-text,.paper.a4-text-large.c5 .q-text{font-size:12px!important;line-height:1.14!important}.paper.a4-text-extra.c3 .q-text,.paper.a4-text-extra.c4 .q-text,.paper.a4-text-extra.c5 .q-text{font-size:13.5px!important;line-height:1.16!important}
+    .paper.a4-text-large .ca-option{font-size:10.5px!important;line-height:1.18}.paper.a4-text-extra .ca-option{font-size:11.5px!important;line-height:1.2}
+    .paper.a4-text-large .dict-word,.paper.a4-text-large .paper-meta,.paper.a4-text-large .student{font-size:11.5px!important}.paper.a4-text-extra .dict-word,.paper.a4-text-extra .paper-meta,.paper.a4-text-extra .student{font-size:12.5px!important}
     @media print{
       .paper.c1,.paper.c2,.paper.c3,.paper.c4,.paper.c5{padding:8mm}
       .paper.c1 .q-card,.paper.c2 .q-card,.paper.c3 .q-card,.paper.c4 .q-card,.paper.c5 .q-card{min-height:0!important;padding:3px;border-radius:7px}
@@ -199,7 +207,7 @@
           <button class="ghost" onclick="openCurrentAffairsPaste()">📰 Today’s C.A. MCQ</button>
           <button class="danger" id="regenBtn" onclick="generateWorksheet(true)" disabled>↻ Regenerate Date</button>
           <div class="type-controls" role="group" aria-label="A4 font controls">
-            <label>A4 text size<select id="a4FontSize" onchange="changeTypography()"><option value="normal">Normal</option><option value="large">Large</option><option value="extra">Extra large</option></select></label>
+            <label>A4 text size — front + back<select id="a4FontSize" onchange="changeTypography()"><option value="normal">Normal</option><option value="large">Very large</option><option value="extra">Extra large</option></select></label>
             <label>Telugu font<select id="teluguFont" onchange="changeTypography()"><option value="clear">Clear Telugu</option><option value="traditional">Traditional Telugu</option><option value="nirmala">Nirmala UI</option></select></label>
             <label>English font<select id="englishFont" onchange="changeTypography()"><option value="clear">Clear English</option><option value="book">Book style</option><option value="rounded">Rounded style</option></select></label>
           </div>
