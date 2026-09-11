@@ -178,13 +178,17 @@
     /* Give beginner tracing words a little more breathing room from their picture. */
     .paper.c1 .trace-card .visual,.paper.c2 .trace-card .visual{transform:translateX(14px)}
     /* Large reference and child drawing boxes share equal space inside the question card. */
-    .line-drawing-card{--drawing-box-height:44px;--drawing-fill:88%;overflow:hidden}
-    .paper.c1 .line-drawing-card{--drawing-box-height:58px}.paper.c2 .line-drawing-card{--drawing-box-height:52px}
-    .paper.c3 .line-drawing-card{--drawing-box-height:46px}.paper.c4 .line-drawing-card,.paper.c5 .line-drawing-card{--drawing-box-height:42px}
-    .paper.drawing-size-normal .line-drawing-card{--drawing-fill:72%}.paper.drawing-size-large .line-drawing-card{--drawing-fill:88%}.paper.drawing-size-extra .line-drawing-card{--drawing-fill:100%}
+    .line-drawing-card{--drawing-box-height:64px;--drawing-fill:100%;overflow:hidden}
+    .paper.c1 .line-drawing-card{--drawing-box-height:88px}.paper.c2 .line-drawing-card{--drawing-box-height:80px}
+    .paper.c3 .line-drawing-card{--drawing-box-height:70px}.paper.c4 .line-drawing-card,.paper.c5 .line-drawing-card{--drawing-box-height:64px}
+    .paper.drawing-size-normal.c1 .line-drawing-card{--drawing-box-height:72px;--drawing-fill:88%}.paper.drawing-size-normal.c2 .line-drawing-card{--drawing-box-height:66px;--drawing-fill:88%}
+    .paper.drawing-size-normal.c3 .line-drawing-card{--drawing-box-height:58px;--drawing-fill:88%}.paper.drawing-size-normal.c4 .line-drawing-card,.paper.drawing-size-normal.c5 .line-drawing-card{--drawing-box-height:52px;--drawing-fill:88%}
+    .paper.drawing-size-large .line-drawing-card{--drawing-fill:100%}
+    .paper.drawing-size-extra.c1 .line-drawing-card{--drawing-box-height:104px;--drawing-fill:100%}.paper.drawing-size-extra.c2 .line-drawing-card{--drawing-box-height:94px;--drawing-fill:100%}
+    .paper.drawing-size-extra.c3 .line-drawing-card{--drawing-box-height:82px;--drawing-fill:100%}.paper.drawing-size-extra.c4 .line-drawing-card,.paper.drawing-size-extra.c5 .line-drawing-card{--drawing-box-height:74px;--drawing-fill:100%}
     .drawing-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px;width:100%;height:var(--drawing-box-height);min-height:0;margin-top:3px}
-    .drawing-pane{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border:1px dashed #7d8990;border-radius:6px;background:#fff}
-    .line-drawing-visual{letter-spacing:0!important}.line-drawing-visual img{display:block;width:var(--drawing-fill);height:var(--drawing-fill);max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);mix-blend-mode:multiply}
+    .drawing-pane{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border:1.5px dashed #617181;border-radius:6px;background:#fff}
+    .line-drawing-visual{padding:2px;letter-spacing:0!important}.line-drawing-visual img{display:block;width:var(--drawing-fill);height:var(--drawing-fill);max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);mix-blend-mode:multiply}
     .drawing-space{background:repeating-linear-gradient(0deg,#fff 0 8px,#dbe3e7 8px 9px)}
   </style>
 </head>
