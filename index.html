@@ -176,7 +176,7 @@
     .paper .ca-option,.paper .options{font-size:10px!important}.paper.a4-text-large .ca-option,.paper.a4-text-large .options{font-size:11px!important}.paper.a4-text-extra .ca-option,.paper.a4-text-extra .options{font-size:12px!important}
     .paper.a4-text-large .q-subject{font-size:8.5px}.paper.a4-text-extra .q-subject{font-size:9px}.paper.a4-text-large .lesson-name{font-size:7.5px}.paper.a4-text-extra .lesson-name{font-size:8px}
     /* Give beginner tracing words a little more breathing room from their picture. */
-    .paper.c1 .trace-card .visual,.paper.c2 .trace-card .visual{transform:translateX(14px)}
+    .paper.c1 .trace-card .visual,.paper.c2 .trace-card .visual{transform:none;padding-left:28px}
     /* Large reference and child drawing boxes share equal space inside the question card. */
     .line-drawing-card{--drawing-box-height:64px;--drawing-fill:100%;overflow:hidden}
     .paper.c1 .line-drawing-card{--drawing-box-height:88px}.paper.c2 .line-drawing-card{--drawing-box-height:80px}
@@ -420,14 +420,34 @@ function renderWorksheet(v){emptyState.style.display='none';const pages=splitQue
 function elementFits(el){return el.scrollHeight<=el.clientHeight+2&&el.scrollWidth<=el.clientWidth+2}
 function fitFixedA4Page(paper){
   const area=paper.querySelector('.fit-area');
-  area.style.transform='none';area.style.width='100%';area.dataset.scale='1.000';
+  area.style.setProperty('transform','none','important');area.style.height='100%';area.style.width='100%';area.dataset.scale='1.000';
   paper.classList.remove('c1-tight','c1-compact','paper-fit-tight','paper-fit-compact','paper-fit-emergency');
+  const questions=paper.querySelector('.questions');
+  // Size each row to its actual content before reducing typography.
+  if(!paper.classList.contains('manual-layout')){
+    questions.style.gridTemplateRows='none';
+    questions.style.gridAutoRows='minmax(max-content,1fr)';
+  }
   const modes=['','paper-fit-tight','paper-fit-compact','paper-fit-emergency'];
   for(const mode of modes){
     paper.classList.remove('paper-fit-tight','paper-fit-compact','paper-fit-emergency');if(mode)paper.classList.add(mode);
     void paper.offsetHeight;
     const cards=[...paper.querySelectorAll('.q-card')],questions=paper.querySelector('.questions');
     if(elementFits(area)&&elementFits(questions)&&cards.every(elementFits))return true;
+  }
+  // If natural row heights need slightly more space, fit the complete content
+  // rather than clipping questions or requiring a manual text-size change.
+  if(!paper.classList.contains('manual-layout')){
+    const available=paper.clientHeight-parseFloat(getComputedStyle(paper).paddingTop)-parseFloat(getComputedStyle(paper).paddingBottom);
+    area.style.height='auto';
+    const height=Math.max(area.scrollHeight,area.getBoundingClientRect().height);
+    const scale=Math.min(1,(available-2)/height);
+    if(scale>=0.8&&[...paper.querySelectorAll('.q-card')].every(elementFits)){
+      area.style.setProperty('transform',`scale(${scale})`,'important');
+      area.dataset.scale=String(scale);
+      return area.getBoundingClientRect().height<=available&&area.scrollWidth<=area.clientWidth+2;
+    }
+    area.style.height='100%';
   }
   return false;
 }
