@@ -190,6 +190,15 @@
     .drawing-pane{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border:1.5px dashed #617181;border-radius:6px;background:#fff}
     .line-drawing-visual{padding:2px;letter-spacing:0!important}.line-drawing-visual img{display:block;width:var(--drawing-fill);height:var(--drawing-fill);max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);mix-blend-mode:multiply}
     .drawing-space{background:repeating-linear-gradient(0deg,#fff 0 8px,#dbe3e7 8px 9px)}
+    /* Beginner text uses the same sizes as Classes 3–5, without page scaling. */
+    .paper:is(.c1,.c2) .q-text{font-size:11px!important}
+    .paper:is(.c1,.c2).a4-text-large .q-text{font-size:12.5px!important}
+    .paper:is(.c1,.c2).a4-text-extra .q-text{font-size:13.5px!important}
+    .paper:is(.c1,.c2) .q-card:has(>.trace-stack){display:grid;grid-template-columns:64px minmax(0,1fr);grid-template-rows:auto auto auto!important;align-content:start;column-gap:5px}
+    .paper:is(.c1,.c2) .q-card:has(>.trace-stack)>.q-top{grid-column:1/-1}
+    .paper:is(.c1,.c2) .q-card:has(>.trace-stack)>.visual{grid-column:1;grid-row:2;padding:0;letter-spacing:0;align-self:center;min-width:0}
+    .paper:is(.c1,.c2) .q-card>.trace-stack{grid-column:2;grid-row:2;align-self:center!important;overflow:visible!important}
+    .paper:is(.c1,.c2) .q-card>.practice-guides{grid-column:1/-1;grid-row:3}
   </style>
 </head>
 <body>
@@ -428,7 +437,8 @@ function fitFixedA4Page(paper){
     questions.style.gridTemplateRows='none';
     questions.style.gridAutoRows='minmax(max-content,1fr)';
   }
-  const modes=['','paper-fit-tight','paper-fit-compact','paper-fit-emergency'];
+  const beginner=paper.classList.contains('c1')||paper.classList.contains('c2');
+  const modes=beginner?['']:['','paper-fit-tight','paper-fit-compact','paper-fit-emergency'];
   for(const mode of modes){
     paper.classList.remove('paper-fit-tight','paper-fit-compact','paper-fit-emergency');if(mode)paper.classList.add(mode);
     void paper.offsetHeight;
@@ -437,7 +447,7 @@ function fitFixedA4Page(paper){
   }
   // If natural row heights need slightly more space, fit the complete content
   // rather than clipping questions or requiring a manual text-size change.
-  if(!paper.classList.contains('manual-layout')){
+  if(!beginner&&!paper.classList.contains('manual-layout')){
     const available=paper.clientHeight-parseFloat(getComputedStyle(paper).paddingTop)-parseFloat(getComputedStyle(paper).paddingBottom);
     area.style.height='auto';
     const height=Math.max(area.scrollHeight,area.getBoundingClientRect().height);
