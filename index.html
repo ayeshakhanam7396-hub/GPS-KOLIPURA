@@ -461,16 +461,50 @@ function fitFixedA4Page(paper){
   }
   return false;
 }
+// Measure only printable content, using the same print rules as the print dialog.
+function measurePrintableA4(paper){
+  let printStyle=document.getElementById('a4-measure-print-css');
+  if(!printStyle){
+    const rules=[];
+    for(const sheet of document.styleSheets){
+      let sheetRules;try{sheetRules=sheet.cssRules}catch(error){continue}
+      for(const rule of sheetRules){
+        if(rule.type!==CSSRule.MEDIA_RULE||rule.conditionText!=='print')continue;
+        for(const child of rule.cssRules){
+          if(child.type!==CSSRule.STYLE_RULE)continue;
+          const selectors=child.selectorText.split(',').map(s=>s.trim()).filter(s=>!/^body\b/.test(s));
+          if(selectors.length)rules.push(selectors.map(s=>`.a4-print-measure ${s}`).join(',')+'{'+child.style.cssText+'}');
+        }
+      }
+    }
+    printStyle=document.createElement('style');printStyle.id='a4-measure-print-css';printStyle.textContent=rules.join('\n');document.head.append(printStyle);
+  }
+  const host=document.createElement('div');host.className='a4-print-measure';host.setAttribute('aria-hidden','true');host.inert=true;
+  host.style.cssText='position:fixed;left:-10000px;top:0;width:1000px;visibility:hidden;pointer-events:none';
+  const copy=paper.cloneNode(true);copy.style.setProperty('display','block','important');host.append(copy);document.body.append(host);
+  try{
+    const fits=fitFixedA4Page(copy);
+    const area=copy.querySelector('.fit-area'),questions=copy.querySelector('.questions');
+    paper.querySelector('.fit-area').style.cssText=area.style.cssText;
+    const originalQuestions=paper.querySelector('.questions');
+    originalQuestions.style.gridTemplateRows=questions.style.gridTemplateRows;originalQuestions.style.gridAutoRows=questions.style.gridAutoRows;
+    paper.querySelector('.fit-area').dataset.scale=area.dataset.scale;
+    for(const mode of ['c1-tight','c1-compact','paper-fit-tight','paper-fit-compact','paper-fit-emergency'])paper.classList.toggle(mode,copy.classList.contains(mode));
+    const failedCard=[...copy.querySelectorAll('.q-card')].find(el=>!elementFits(el));
+    paper.dataset.a4FitDetail=fits?'':failedCard?`Question ${failedCard.querySelector('.q-num')?.textContent||''}`:'Page height or width';
+    return fits;
+  }finally{host.remove()}
+}
 function fitAllPages(){
   const papers=[...document.querySelectorAll('#worksheet .paper')];
   if(papers.length!==2){printBtn.disabled=true;fitBadge.className='fit-badge error';fitBadge.textContent='A4 fit failed';return false}
   if(activeWorksheet?.questions?.some(q=>isSaralaQuestion(q)&&!isSaralaWord(String(q.answer||'')))){printBtn.disabled=true;fitBadge.className='fit-badge error';fitBadge.textContent='Invalid Sarala Padam — regenerate this date';return false}
   let allFit=true;
   papers.forEach(paper=>{
-    const fits=fitFixedA4Page(paper);
+    const fits=measurePrintableA4(paper);
     paper.dataset.a4Fit=fits?'yes':'no';allFit=allFit&&fits;
   });
-  printBtn.disabled=!allFit;fitBadge.className=`fit-badge ${allFit?'ready':'error'}`;fitBadge.textContent=allFit?'✓ Front + Back fit A4':'A4 overflow — choose smaller text';return allFit;
+  printBtn.disabled=!allFit;fitBadge.className=`fit-badge ${allFit?'ready':'error'}`;fitBadge.textContent=allFit?'✓ Front + Back fit A4':'A4 print overflow — '+papers.filter(p=>p.dataset.a4Fit==='no').map(p=>`${p.dataset.page==='0'?'Front':'Back'}: ${p.dataset.a4FitDetail}`).join('; ');return allFit;
 }
 function layoutStorageKey(pageIndex){return activeWorksheet?`${key()}|V${activeWorksheet.number}|P${pageIndex}`:null}
 function normalizedBox(rect,parentRect){return{x:Math.max(0,(rect.left-parentRect.left)/parentRect.width),y:Math.max(0,(rect.top-parentRect.top)/parentRect.height),w:Math.min(1,rect.width/parentRect.width),h:Math.min(1,rect.height/parentRect.height)}}
