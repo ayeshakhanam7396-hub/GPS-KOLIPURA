@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+<title id="title">Ocean life</title><desc id="desc">A child-friendly black outline drawing of ocean waves, fish, sea turtle, coral and sea plants for colouring.</desc>
+<g fill="none" stroke="#111" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 92 Q48 72 78 92 T138 92 T198 92 T258 92 T318 92 T378 92 T438 92 T498 92 T558 92 T622 92"/>
+<path d="M18 112 Q48 92 78 112 T138 112 T198 112 T258 112 T318 112 T378 112 T438 112 T498 112 T558 112 T622 112"/>
+<path d="M55 255 Q62 230 55 208 Q80 220 83 242 Q92 213 111 205 Q108 236 91 255"/>
+<path d="M540 360 Q526 330 539 305 Q550 326 552 345 Q560 314 582 303 Q580 338 559 360"/>
+<path d="M88 365 Q76 336 88 312 Q102 335 101 353 Q114 326 134 322 Q131 350 109 368"/>
+<path d="M196 205 C215 170 274 170 300 202 C274 236 215 236 196 205 Z"/><path d="M196 205 L169 183 L169 227 Z"/><circle cx="274" cy="199" r="5" fill="#111"/><path d="M220 185 Q234 205 220 225"/>
+<path d="M402 260 C425 231 474 231 497 260 C474 289 425 289 402 260 Z"/><path d="M402 260 L375 239 L375 281 Z"/><circle cx="470" cy="254" r="5" fill="#111"/><path d="M430 242 Q445 260 430 278"/>
+<ellipse cx="320" cy="324" rx="54" ry="37"/><path d="M360 305 Q385 292 397 310 Q403 325 385 334 L361 333"/><path d="M281 299 Q261 283 250 296 Q246 309 267 318"/><path d="M282 349 Q266 365 281 375 Q297 376 306 357"/><path d="M350 351 Q363 369 378 360 Q385 347 364 337"/><path d="M285 309 Q320 286 352 309 L355 337 Q321 356 285 337 Z"/><path d="M303 306 L335 340 M335 306 L303 340"/><circle cx="387" cy="310" r="3" fill="#111"/>
+<path d="M148 383 Q164 360 180 383 Q196 360 212 383 Q228 360 244 383"/>
+<path d="M444 383 Q460 360 476 383 Q492 360 508 383 Q524 360 540 383"/>
+<path d="M18 397 Q48 377 78 397 T138 397 T198 397 T258 397 T318 397 T378 397 T438 397 T498 397 T558 397 T622 397"/>
+</g></svg>
