@@ -178,19 +178,18 @@
     /* Give beginner tracing words a little more breathing room from their picture. */
     .paper.c1 .trace-card .visual,.paper.c2 .trace-card .visual{transform:none;padding-left:28px}
     /* Large reference and child drawing boxes share equal space inside the question card. */
-    .line-drawing-card{--drawing-box-height:64px;--drawing-fill:100%;overflow:hidden}
-    .paper.c1 .line-drawing-card{--drawing-box-height:88px}.paper.c2 .line-drawing-card{--drawing-box-height:80px}
-    .paper.c3 .line-drawing-card{--drawing-box-height:70px}.paper.c4 .line-drawing-card,.paper.c5 .line-drawing-card{--drawing-box-height:64px}
-    .paper.drawing-size-normal.c1 .line-drawing-card{--drawing-box-height:72px;--drawing-fill:88%}.paper.drawing-size-normal.c2 .line-drawing-card{--drawing-box-height:66px;--drawing-fill:88%}
-    .paper.drawing-size-normal.c3 .line-drawing-card{--drawing-box-height:58px;--drawing-fill:88%}.paper.drawing-size-normal.c4 .line-drawing-card,.paper.drawing-size-normal.c5 .line-drawing-card{--drawing-box-height:52px;--drawing-fill:88%}
+    .line-drawing-card{--drawing-box-height:150px;--drawing-fill:100%;overflow:hidden}
+    .paper.c1 .line-drawing-card{--drawing-box-height:160px}.paper.c2 .line-drawing-card{--drawing-box-height:155px}
+    .paper.c3 .line-drawing-card{--drawing-box-height:150px}.paper.c4 .line-drawing-card,.paper.c5 .line-drawing-card{--drawing-box-height:145px}
+    .paper.drawing-size-normal .line-drawing-card{--drawing-box-height:130px;--drawing-fill:100%}
     .paper.drawing-line-light .line-drawing-card svg *{stroke-width:1.2px!important}.paper.drawing-line-thick .line-drawing-card svg *{stroke-width:2.8px!important}.paper.drawing-line-thicker .line-drawing-card svg *{stroke-width:4.2px!important}
     .paper.drawing-size-large .line-drawing-card{--drawing-fill:100%}
-    .paper.drawing-size-extra.c1 .line-drawing-card{--drawing-box-height:104px;--drawing-fill:100%}.paper.drawing-size-extra.c2 .line-drawing-card{--drawing-box-height:94px;--drawing-fill:100%}
-    .paper.drawing-size-extra.c3 .line-drawing-card{--drawing-box-height:82px;--drawing-fill:100%}.paper.drawing-size-extra.c4 .line-drawing-card,.paper.drawing-size-extra.c5 .line-drawing-card{--drawing-box-height:74px;--drawing-fill:100%}
-    .drawing-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px;width:100%;height:var(--drawing-box-height);min-height:0;margin-top:3px}
-    .drawing-pane{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border:1.5px dashed #617181;border-radius:6px;background:#fff}
-    .line-drawing-visual{padding:2px;letter-spacing:0!important}.line-drawing-visual img{display:block;width:var(--drawing-fill);height:var(--drawing-fill);max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);mix-blend-mode:multiply}
-    .drawing-space{background:repeating-linear-gradient(0deg,#fff 0 8px,#dbe3e7 8px 9px)}
+    .paper.drawing-size-extra.c1 .line-drawing-card{--drawing-box-height:175px;--drawing-fill:100%}.paper.drawing-size-extra.c2 .line-drawing-card{--drawing-box-height:170px;--drawing-fill:100%}
+    .paper.drawing-size-extra.c3 .line-drawing-card{--drawing-box-height:165px;--drawing-fill:100%}.paper.drawing-size-extra.c4 .line-drawing-card,.paper.drawing-size-extra.c5 .line-drawing-card{--drawing-box-height:160px;--drawing-fill:100%}
+    .drawing-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;width:100%;height:var(--drawing-box-height);min-height:0;margin-top:5px}
+    .drawing-pane{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;min-height:0;overflow:hidden;border:1.5px dashed #617181;border-radius:8px;background:#fff}
+    .line-drawing-visual{padding:5px;letter-spacing:0!important}.line-drawing-visual img{display:block;width:var(--drawing-fill);height:var(--drawing-fill);max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);mix-blend-mode:multiply}
+    .drawing-space{background:repeating-linear-gradient(0deg,#fff 0 10px,#dbe3e7 10px 11px)}
     /* Beginner text uses the same sizes as Classes 3–5, without page scaling. */
     .paper:is(.c1,.c2) .q-text{font-size:11px!important}
     .paper:is(.c1,.c2).a4-text-large .q-text{font-size:12.5px!important}
@@ -378,11 +377,11 @@ function chooseSaralaWords(seed,count=8){const rand=seeded(`${seed}-verified-sar
 function chooseBeginnerLanguage(subject,total,seed){if(subject==='telugu')return chooseSaralaWords(seed,total);return choose(subject,total,`${seed}-${subject}-picture-words`)}
 const DRAWING_IMAGE_BASE='assets/line-drawings/';
 const drawingActivities={
-  1:{telugu:['గంటను గీయండి.','1F514','గంట','చిత్ర పఠనం మరియు రచన'],english:['Copy the apple.','1F34E','apple','Picture Reading and Writing'],maths:['Draw the circle.','2B55','circle','Shapes Around Us']},
-  2:{telugu:['ఇల్లును గీయండి.','1F3E0','ఇల్లు','చిత్ర పఠనం మరియు రచన'],english:['Copy the fish.','1F41F','fish','Picture Reading and Writing'],maths:['Draw the clock.','1F552','clock','Time and Calendar']},
-  3:{telugu:['చెట్టును గీయండి.','1F333','చెట్టు','చిత్ర పఠనం మరియు రచన'],english:['Copy the book.','1F4D6','book','Picture Reading and Writing'],maths:['Draw the triangle.','1F53A','triangle','Shapes and Measurement'],evs:['Draw the plant.','1F331','plant','Plants Around Us']},
-  4:{telugu:['పక్షిని గీయండి.','1F426','పక్షి','చిత్ర పఠనం మరియు రచన'],english:['Copy the umbrella.','2602','umbrella','Picture Reading and Writing'],maths:['పట్టీని గీయండి.','1F4CF','పట్టీ','కొలతలు'],evs:['నీటి బొట్టును గీయండి.','1F4A7','నీటి బొట్టు','నీటి సంరక్షణ']},
-  5:{telugu:['పావురాన్ని గీయండి.','1F54A','పావురం','చిత్ర పఠనం మరియు రచన'],english:['Copy the globe.','1F30D','globe','Picture Reading and Writing'],maths:['ఘనాన్ని గీయండి.','1F3B2','ఘనం','ఘనాకారాలు'],evs:['కర్మాగారాన్ని గీయండి.','1F3ED','కర్మాగారం','పర్యావరణం']}
+  1:{telugu:['చిత్రానికి రంగులు వేయండి.','1F333','చెట్టు','చిత్రలేఖనం'],english:['Colour the picture.','1F34E','apple','Picture Colouring'],maths:['చిత్రానికి రంగులు వేయండి.','1F426','పక్షి','చిత్రలేఖనం']},
+  2:{telugu:['చిత్రానికి రంగులు వేయండి.','1F3E0','ఇల్లు','చిత్రలేఖనం'],english:['Colour the picture.','1F41F','చేప','Picture Colouring'],maths:['చిత్రానికి రంగులు వేయండి.','1F514','గంట','చిత్రలేఖనం']},
+  3:{telugu:['చిత్రానికి రంగులు వేయండి.','1F34E','ఆపిల్','చిత్రలేఖనం'],english:['Colour the picture.','1F3E0','ఇల్లు','Picture Colouring'],maths:['చిత్రానికి రంగులు వేయండి.','1F41F','చేప','చిత్రలేఖనం'],evs:['చిత్రానికి రంగులు వేయండి.','1F426','పక్షి','చిత్రలేఖనం']},
+  4:{telugu:['చిత్రానికి రంగులు వేయండి.','1F30D','భూగోళం','చిత్రలేఖనం'],english:['Colour the picture.','1F333','చెట్టు','Picture Colouring'],maths:['చిత్రానికి రంగులు వేయండి.','1F41F','చేప','చిత్రలేఖనం'],evs:['చిత్రానికి రంగులు వేయండి.','1F34E','ఆపిల్','చిత్రలేఖనం']},
+  5:{telugu:['చిత్రానికి రంగులు వేయండి.','1F426','పక్షి','చిత్రలేఖనం'],english:['Colour the picture.','1F514','గంట','Picture Colouring'],maths:['చిత్రానికి రంగులు వేయండి.','1F3E0','ఇల్లు','చిత్రలేఖనం'],evs:['చిత్రానికి రంగులు వేయండి.','1F30D','భూగోళం','చిత్రలేఖనం']}
 };
 function makeDrawingQuestion(subject){const a=drawingActivities[selectedClass]?.[subject];if(!a)return null;return{id:`DRAW-C${selectedClass}-${subject}`,subject,text:a[0],answer:a[2],mode:'drawing',drawingCode:a[1],visualLabel:a[2],lessonName:a[3],source:'Lesson-related printable line drawing activity',verified:true}}
 function withDrawingActivity(subject,questions){const drawing=makeDrawingQuestion(subject);if(!drawing||!questions.length)return questions;let replaceAt=questions.findIndex(q=>q.mode!=='trace'&&q.mode!=='letter-trace');if(replaceAt<0)replaceAt=questions.length-1;return questions.map((q,i)=>i===replaceAt?drawing:q)}
