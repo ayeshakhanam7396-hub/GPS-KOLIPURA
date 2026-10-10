@@ -222,6 +222,8 @@
     @media screen{
       .paper .q-card .q-actions{position:static;align-self:flex-end;margin-bottom:2px}
     }
+    /* Only English and Maths drawing cards are compacted to match regular question boxes. EVS and all other worksheet content stay unchanged. */
+    .paper .line-drawing-card:is(.subject-english,.subject-maths){--drawing-box-height:72px!important;min-height:26mm!important;height:auto!important}
   </style>
 </head>
 <body>
