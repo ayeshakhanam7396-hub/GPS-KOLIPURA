@@ -307,6 +307,46 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* Date-visibility fallback: runs independently before the worksheet application script. */
+(function(){
+  const byId=id=>document.getElementById(id);
+  const fmtDate=d=>new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'long',year:'numeric'}).format(d);
+  const fmtISO=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+  const fromISO=s=>{const p=String(s).split('-').map(Number);return new Date(p[0],p[1]-1,p[2],12)};
+  let selected=new Date(), view=new Date();
+  function draw(){
+    const label=byId('monthLabel'),grid=byId('calendar');if(!label||!grid)return;
+    label.textContent=new Intl.DateTimeFormat('en-IN',{month:'long',year:'numeric'}).format(new Date(view.getFullYear(),view.getMonth(),1));
+    grid.replaceChildren();
+    const first=new Date(view.getFullYear(),view.getMonth(),1),start=new Date(first);start.setDate(1-first.getDay());
+    for(let i=0;i<42;i++){
+      const d=new Date(start);d.setDate(start.getDate()+i);
+      const b=document.createElement('button');b.type='button';b.className='day';b.style.cssText='display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;color:#17212b!important;font-size:15px!important;line-height:1.2!important;min-height:34px!important;opacity:1!important';
+      if(d.getMonth()!==view.getMonth())b.style.opacity='.42';
+      if(d.getDay()===0)b.style.color='#a14b4b';
+      if(fmtISO(d)===fmtISO(selected)){b.style.background='#16324f';b.style.color='#fff'}
+      b.textContent=String(d.getDate());b.setAttribute('aria-label',fmtDate(d));
+      b.addEventListener('click',()=>{selected=new Date(d);view=new Date(d);updateSelected();draw()});
+      grid.appendChild(b);
+    }
+    updateSelected();
+  }
+  function updateSelected(){
+    const date=fmtISO(selected),shown=fmtDate(selected),d=selected,day=byId('selectedDateText'),weekday=byId('dayText'),meta=byId('dashMeta');
+    if(day)day.textContent=shown;
+    if(weekday)weekday.textContent=new Intl.DateTimeFormat('en-IN',{weekday:'long'}).format(d);
+    if(meta)meta.textContent=shown+' • 2026–27';
+    const head=document.querySelector('#worksheet .paper-meta');
+    if(head&&!head.textContent.includes(date.split('-').reverse().join('-')))head.setAttribute('data-date-fallback',date.split('-').reverse().join('-'));
+  }
+  const prev=document.querySelector('.cal-head button[aria-label="Previous month"]'),next=document.querySelector('.cal-head button[aria-label="Next month"]');
+  if(prev)prev.addEventListener('click',()=>{view.setMonth(view.getMonth()-1);draw()});
+  if(next)next.addEventListener('click',()=>{view.setMonth(view.getMonth()+1);draw()});
+  draw();
+  window.addEventListener('error',()=>{draw();updateSelected()});
+})();
+</script>
+<script>
 const STORE='gpsKolipuraCalendarV1';
 const defaultState={settings:{academicYear:'2026–27',startDate:'2026-09-05',holidays:[],school:'GOVT PRIMARY SCHOOL, KOLIPURA',paper:'GPS KOLIPURA ADB (U)',a4FontSize:'normal',traceSize:'normal',drawingSize:'large',drawingLineWeight:'light',teluguFont:'clear',englishFont:'clear'},worksheets:{},usage:{},materials:[],currentAffairs:{},currentAffairsDaily:{},layouts:{}};
 let state=loadState(), selectedDate=isoDate(new Date()), selectedClass=1, viewDate=new Date(), activeWorksheet=null, arrangeMode=false, drawMode=false;
