@@ -199,6 +199,20 @@
     .paper:is(.c1,.c2) .q-card:has(>.trace-stack)>.visual{grid-column:1;grid-row:2;padding:0;letter-spacing:0;align-self:center;min-width:0}
     .paper:is(.c1,.c2) .q-card>.trace-stack{grid-column:2;grid-row:2;align-self:center!important;overflow:visible!important}
     .paper:is(.c1,.c2) .q-card>.practice-guides{grid-column:1/-1;grid-row:3}
+
+    /* Readable lesson labels and instructions in preview and on paper. */
+    .paper{--lesson-readable:11px;--prompt-readable:13px}
+    .paper.a4-text-large{--lesson-readable:12px;--prompt-readable:14px}
+    .paper.a4-text-extra{--lesson-readable:13px;--prompt-readable:15px}
+    .paper .q-card .q-top>div:last-child{min-width:0;flex:1}
+    .paper .q-card .q-subject,.paper .q-card .lesson-name{
+      font-size:var(--lesson-readable)!important;line-height:1.3;
+      letter-spacing:0;text-transform:none;color:#243746;overflow-wrap:anywhere
+    }
+    .paper .q-card .q-text{font-size:var(--prompt-readable)!important;line-height:1.3!important}
+    @media screen{
+      .paper .q-card .q-actions{position:static;align-self:flex-end;margin-bottom:2px}
+    }
   </style>
 </head>
 <body>
