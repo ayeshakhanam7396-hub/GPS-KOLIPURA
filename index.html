@@ -307,6 +307,24 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* Independent date-rendering fallback, deliberately separate from drawing/tracing code. */
+(function(){
+ const $=id=>document.getElementById(id), iso=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+ let selected=new Date(),view=new Date();
+ function render(){
+  const label=$('monthLabel'),grid=$('calendar');if(!label||!grid)return;
+  label.textContent=new Intl.DateTimeFormat('en-IN',{month:'long',year:'numeric'}).format(new Date(view.getFullYear(),view.getMonth(),1));
+  grid.replaceChildren();const first=new Date(view.getFullYear(),view.getMonth(),1),start=new Date(first);start.setDate(1-first.getDay());
+  for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const b=document.createElement('button');b.type='button';b.className='day';b.style.cssText='display:flex;align-items:center;justify-content:center;min-height:34px;padding:3px 0;color:#17212b;font-size:15px;line-height:1.2;opacity:1';if(d.getMonth()!==view.getMonth())b.style.opacity='.42';if(d.getDay()===0)b.style.color='#a14b4b';if(iso(d)===iso(selected)){b.style.background='#16324f';b.style.color='#fff'}b.textContent=String(d.getDate());b.setAttribute('aria-label',new Intl.DateTimeFormat('en-IN',{dateStyle:'full'}).format(d));b.addEventListener('click',()=>{selected=new Date(d);view=new Date(d);render()});grid.appendChild(b)}
+  const shown=new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'long',year:'numeric'}).format(selected),weekday=new Intl.DateTimeFormat('en-IN',{weekday:'long'}).format(selected);
+  if($('selectedDateText'))$('selectedDateText').textContent=shown;if($('dayText'))$('dayText').textContent=weekday;if($('dashMeta'))$('dashMeta').textContent=shown+' • 2026–27';
+ }
+ const prev=document.querySelector('.cal-head button[aria-label="Previous month"]'),next=document.querySelector('.cal-head button[aria-label="Next month"]');
+ if(prev)prev.addEventListener('click',()=>{view.setMonth(view.getMonth()-1);render()});if(next)next.addEventListener('click',()=>{view.setMonth(view.getMonth()+1);render()});
+ render();window.addEventListener('error',render);
+})();
+</script>
+<script>
 const STORE='gpsKolipuraCalendarV1';
 const defaultState={settings:{academicYear:'2026–27',startDate:'2026-09-05',holidays:[],school:'GOVT PRIMARY SCHOOL, KOLIPURA',paper:'GPS KOLIPURA ADB (U)',a4FontSize:'normal',traceSize:'normal',drawingSize:'large',drawingLineWeight:'light',teluguFont:'clear',englishFont:'clear'},worksheets:{},usage:{},materials:[],currentAffairs:{},currentAffairsDaily:{},layouts:{}};
 let state=loadState(), selectedDate=isoDate(new Date()), selectedClass=1, viewDate=new Date(), activeWorksheet=null, arrangeMode=false, drawMode=false;
