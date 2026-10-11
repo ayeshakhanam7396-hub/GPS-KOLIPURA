@@ -360,7 +360,7 @@ function isSaralaQuestion(q){return !!q&&(q.id?.startsWith('SAR-')||(selectedCla
 function makeSaralaQuestion(word,visual){if(!isSaralaWord(word))throw new Error('Invalid Sarala Padam');return{id:`SAR-C${selectedClass}-${[...word].map(c=>c.codePointAt(0).toString(16)).join('-')}`,subject:'telugu',text:'చిత్రం చూసి పూర్తి సరళ పదాన్ని దిద్దండి.',visual,visualLabel:word,answer:word,mode:'trace',bankIndex:-1,source:'Verified FLN Sarala Padalu bank — అచ్చులు, హల్లులు, సున్నా మాత్రమే; గుణింతాలు లేదా వత్తులు లేవు',verified:true}}
 function chooseSaralaWords(seed,count=8){const rand=seeded(`${seed}-verified-sarala`),pool=saralaWords.filter(([word])=>isSaralaWord(word));pool.sort(()=>rand()-.5);return pool.slice(0,count).map(([word,visual])=>makeSaralaQuestion(word,visual))}
 function chooseBeginnerLanguage(subject,total,seed){if(subject==='telugu')return chooseSaralaWords(seed,total);return choose(subject,total,`${seed}-${subject}-picture-words`)}
-const DRAWING_IMAGE_BASE='assets/line-drawings/';
+const DRAWING_IMAGE_BASE=new URL('/GPS-KOLIPURA/assets/line-drawings/',window.location.origin).href;
 const drawingActivities={
   1:{telugu:['గంటను గీయండి.','1F514','గంట','చిత్ర పఠనం మరియు రచన'],english:['Copy the apple.','1F34E','apple','Picture Reading and Writing'],maths:['Draw the circle.','2B55','circle','Shapes Around Us']},
   2:{telugu:['ఇల్లును గీయండి.','1F3E0','ఇల్లు','చిత్ర పఠనం మరియు రచన'],english:['Copy the fish.','1F41F','fish','Picture Reading and Writing'],maths:['Draw the clock.','1F552','clock','Time and Calendar']},
