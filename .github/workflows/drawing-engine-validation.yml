@@ -1,0 +1,31 @@
+name: GPS KOLIPURA Drawing Engine Validation
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["drawing-engine-current-affairs-fix-20261018"]
+
+permissions:
+  contents: read
+
+jobs:
+  drawing-engine-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - name: Validate drawing engine and worksheet contracts
+        run: node scripts/validate-drawing-engine.mjs
+      - name: Validate cross-device ledger security contract
+        run: node scripts/validate-drawing-ledger.mjs
+      - name: Install Chromium browser
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Verify A4 duplex drawing layout in Chromium
+        run: node scripts/validate-drawing-layout.mjs
