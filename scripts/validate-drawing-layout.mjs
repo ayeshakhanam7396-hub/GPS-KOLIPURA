@@ -33,6 +33,7 @@ try {
     ca: (() => { const el = document.querySelector('.paper.c1 .current'); if (!el) return null; const r = el.getBoundingClientRect(); return { width: r.width, height: r.height, gridColumn: getComputedStyle(el).gridColumn }; })(),
     pageErrors
   }), errors);
+  console.log('SCREEN_GEOMETRY=' + JSON.stringify(screen));
   assert.equal(screen.pages.length, 2, 'duplex worksheet must render two A4 pages');
   assert.deepEqual(screen.pages.map((p) => p.panelCount), [2, 2], 'each side must have two drawing panels');
   assert.equal(new Set(screen.ids).size, 4, 'all four drawings on the worksheet must be distinct');
