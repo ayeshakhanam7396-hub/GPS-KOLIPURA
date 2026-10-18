@@ -20,6 +20,8 @@ as $$
 declare
   v_ids integer[];
   v_count integer;
+  v_outline integer[];
+  v_half integer[];
 begin
   if p_worksheet_key is null or length(trim(p_worksheet_key)) = 0 or length(p_worksheet_key) > 200 then
     raise exception 'invalid worksheet key';
@@ -30,18 +32,31 @@ begin
 
   -- Deterministic exhaustion handling and transaction-level serialization.
   perform pg_advisory_xact_lock(hashtext('gps-kolipura-drawing-ledger'));
+  if p_count <> 4 then
+    raise exception 'drawing worksheet reservations require exactly four IDs';
+  end if;
+
   select array_agg(candidate order by candidate)
-    into v_ids
+    into v_outline
     from (
       select candidate
-      from generate_series(0, 2499) as candidate
-      where not exists (
-        select 1 from public.gps_drawing_reservations r
-        where r.drawing_id = candidate
-      )
+      from generate_series(0, 1249) as candidate
+      where not exists (select 1 from public.gps_drawing_reservations r where r.drawing_id = candidate)
       order by candidate
-      limit p_count
-    ) available;
+      limit 2
+    ) available_outline;
+
+  select array_agg(candidate order by candidate)
+    into v_half
+    from (
+      select candidate
+      from generate_series(1250, 2499) as candidate
+      where not exists (select 1 from public.gps_drawing_reservations r where r.drawing_id = candidate)
+      order by candidate
+      limit 2
+    ) available_half;
+
+  v_ids := coalesce(v_outline, '{}'::integer[]) || coalesce(v_half, '{}'::integer[]);
   v_count := coalesce(array_length(v_ids, 1), 0);
   if v_count <> p_count then
     raise exception 'DRAWING_LIBRARY_EXHAUSTED';
