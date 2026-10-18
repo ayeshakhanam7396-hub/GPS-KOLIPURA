@@ -439,12 +439,12 @@ function fitFixedA4Page(paper){
   area.style.setProperty('transform','none','important');area.style.height='100%';area.style.width='100%';area.dataset.scale='1.000';
   paper.classList.remove('c1-tight','c1-compact','paper-fit-tight','paper-fit-compact','paper-fit-emergency');
   const questions=paper.querySelector('.questions');
-  // Size each row to its actual content before reducing typography.
-  if(!paper.classList.contains('manual-layout')){
+  const beginner=paper.classList.contains('c1')||paper.classList.contains('c2');
+  // Preserve the fixed beginner grid so added drawing panels stay within A4.
+  if(!paper.classList.contains('manual-layout')&&!beginner){
     questions.style.gridTemplateRows='none';
     questions.style.gridAutoRows='minmax(max-content,1fr)';
   }
-  const beginner=paper.classList.contains('c1')||paper.classList.contains('c2');
   const modes=beginner?['']:['','paper-fit-tight','paper-fit-compact','paper-fit-emergency'];
   for(const mode of modes){
     paper.classList.remove('paper-fit-tight','paper-fit-compact','paper-fit-emergency');if(mode)paper.classList.add(mode);
