@@ -3,6 +3,7 @@
 create table if not exists public.gps_drawing_reservations (
   drawing_id integer primary key check (drawing_id >= 0 and drawing_id < 2500),
   worksheet_key text not null,
+  user_id uuid not null default auth.uid(),
   reserved_at timestamptz not null default now(),
   reservation_token uuid not null default gen_random_uuid()
 );
@@ -23,6 +24,9 @@ declare
   v_outline integer[];
   v_half integer[];
 begin
+  if auth.uid() is null then
+    raise exception 'AUTHENTICATION_REQUIRED';
+  end if;
   if p_worksheet_key is null or length(trim(p_worksheet_key)) = 0 or length(p_worksheet_key) > 200 then
     raise exception 'invalid worksheet key';
   end if;
@@ -69,5 +73,5 @@ begin
 end;
 $$;
 
-revoke all on function public.gps_reserve_drawings(text, integer) from public;
-grant execute on function public.gps_reserve_drawings(text, integer) to anon, authenticated;
+revoke all on function public.gps_reserve_drawings(text, integer) from public, anon;
+grant execute on function public.gps_reserve_drawings(text, integer) to authenticated;
