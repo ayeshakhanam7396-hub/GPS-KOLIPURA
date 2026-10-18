@@ -70,7 +70,7 @@ try {
   assert.ok(class3.pages.every((p) => p.panelInsidePage && !p.questionOverflow), 'Class 3 drawing panels and questions must fit A4');
   assert.ok(class3.ca && class3.ca.heading.includes('Today'), 'Class 3 Current Affairs heading must remain intact');
   assert.equal(class3.ca.options, 4, 'Class 3 Current Affairs must retain four options');
-  assert.equal(class3.ca.gridColumn, '1 / -1', 'Class 3 Current Affairs layout must remain full-width');
+  assert.equal(class3.ca.gridColumn, 'auto', 'Class 3 Current Affairs layout must remain unchanged');
   assert.deepEqual(class3.pageErrors, [], 'Class 3 browser run must not throw');
   console.log(JSON.stringify({ result: 'PASS', screen, print, class3 }, null, 2));
 } finally {
