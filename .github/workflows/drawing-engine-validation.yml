@@ -21,6 +21,8 @@ jobs:
           node-version: "22"
       - name: Validate drawing engine and worksheet contracts
         run: node scripts/validate-drawing-engine.mjs
+      - name: Validate cross-device ledger security contract
+        run: node scripts/validate-drawing-ledger.mjs
       - name: Install Chromium browser
         run: |
           npm install --no-save playwright@1.55.0
