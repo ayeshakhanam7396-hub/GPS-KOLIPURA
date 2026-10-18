@@ -14,7 +14,7 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('.drawing-engine-panel .drawing-engine-item svg').length === 4);
   await page.waitForTimeout(250);
 
-  const screen = await page.evaluate(() => ({
+  const screen = await page.evaluate((pageErrors) => ({
     pages: [...document.querySelectorAll('.paper')].map((paper) => {
       const rect = paper.getBoundingClientRect();
       const panel = paper.querySelector('.drawing-engine-panel');
@@ -31,8 +31,8 @@ try {
     }),
     ids: [...document.querySelectorAll('.drawing-engine-item svg')].map((svg) => svg.getAttribute('aria-label')),
     ca: (() => { const el = document.querySelector('.paper.c1 .current'); if (!el) return null; const r = el.getBoundingClientRect(); return { width: r.width, height: r.height, gridColumn: getComputedStyle(el).gridColumn }; })(),
-    pageErrors: errors
-  }));
+    pageErrors
+  }), errors);
   assert.equal(screen.pages.length, 2, 'duplex worksheet must render two A4 pages');
   assert.deepEqual(screen.pages.map((p) => p.panelCount), [2, 2], 'each side must have two drawing panels');
   assert.equal(new Set(screen.ids).size, 4, 'all four drawings on the worksheet must be distinct');
