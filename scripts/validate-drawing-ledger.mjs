@@ -15,7 +15,7 @@ assert.match(sql, /DRAWING_LIBRARY_EXHAUSTED/i);
 assert.match(sql, /revoke all on function public\.gps_reserve_drawings\(text, integer\) from public, anon/i);
 assert.match(sql, /grant execute on function public\.gps_reserve_drawings\(text, integer\) to authenticated/i);
 assert.match(sql, /p_count <> 4/i);
-assert.match(readme, /service role/i);
+assert.match(readme, /service[- ]role/i);
 assert.match(readme, /signInAnonymously|anonymous sign-in/i);
 
 console.log('PASS: ledger ID bounds, RLS, authenticated RPC, atomic lock, style pools, exhaustion, and key-safety documentation');
