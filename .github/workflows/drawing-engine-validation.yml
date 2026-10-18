@@ -21,3 +21,9 @@ jobs:
           node-version: "22"
       - name: Validate drawing engine and worksheet contracts
         run: node scripts/validate-drawing-engine.mjs
+      - name: Install Chromium browser
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Verify A4 duplex drawing layout in Chromium
+        run: node scripts/validate-drawing-layout.mjs
