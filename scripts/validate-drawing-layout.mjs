@@ -51,7 +51,28 @@ try {
   }));
   assert.equal(print.length, 2, 'print output must retain two duplex pages');
   assert.ok(print.every((p) => p.panelInsidePage), 'print-mode drawing panels must stay inside A4 bounds');
-  console.log(JSON.stringify({ result: 'PASS', screen, print }, null, 2));
+  await page.emulateMedia({ media: 'screen' });
+  await page.locator('.class-btn[data-class="3"]').click();
+  await page.locator('#generateBtn').click();
+  await page.waitForFunction(() => document.querySelectorAll('.paper').length === 2);
+  await page.waitForFunction(() => document.querySelectorAll('.drawing-engine-panel .drawing-engine-item svg').length === 4);
+  await page.waitForTimeout(250);
+  const class3 = await page.evaluate(() => ({
+    pages: [...document.querySelectorAll('.paper')].map((paper) => {
+      const r = paper.getBoundingClientRect(), panel = paper.querySelector('.drawing-engine-panel'), q = paper.querySelector('.questions');
+      return { panelCount: panel?.querySelectorAll('.drawing-engine-item').length || 0, panelInsidePage: !!panel && panel.getBoundingClientRect().bottom <= r.bottom + 2, questionOverflow: !!q && q.scrollHeight > q.clientHeight + 2 };
+    }),
+    ca: (() => { const el = document.querySelector('.paper.c3 .current'); if (!el) return null; return { heading: el.querySelector('.q-subject')?.textContent, options: el.querySelectorAll('.ca-option').length, gridColumn: getComputedStyle(el).gridColumn, minHeight: getComputedStyle(el).minHeight }; })(),
+    pageErrors: errors
+  }));
+  assert.equal(class3.pages.length, 2, 'Class 3 must remain duplex');
+  assert.deepEqual(class3.pages.map((p) => p.panelCount), [2, 2], 'Class 3 must also receive two drawings per side');
+  assert.ok(class3.pages.every((p) => p.panelInsidePage && !p.questionOverflow), 'Class 3 drawing panels and questions must fit A4');
+  assert.ok(class3.ca && class3.ca.heading.includes('Today'), 'Class 3 Current Affairs heading must remain intact');
+  assert.equal(class3.ca.options, 4, 'Class 3 Current Affairs must retain four options');
+  assert.equal(class3.ca.gridColumn, '1 / -1', 'Class 3 Current Affairs layout must remain full-width');
+  assert.deepEqual(class3.pageErrors, [], 'Class 3 browser run must not throw');
+  console.log(JSON.stringify({ result: 'PASS', screen, print, class3 }, null, 2));
 } finally {
   await browser.close();
 }
