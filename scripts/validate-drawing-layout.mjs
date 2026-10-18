@@ -57,14 +57,14 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('.paper').length === 2);
   await page.waitForFunction(() => document.querySelectorAll('.drawing-engine-panel .drawing-engine-item svg').length === 4);
   await page.waitForTimeout(250);
-  const class3 = await page.evaluate(() => ({
+  const class3 = await page.evaluate((pageErrors) => ({
     pages: [...document.querySelectorAll('.paper')].map((paper) => {
       const r = paper.getBoundingClientRect(), panel = paper.querySelector('.drawing-engine-panel'), q = paper.querySelector('.questions');
       return { panelCount: panel?.querySelectorAll('.drawing-engine-item').length || 0, panelInsidePage: !!panel && panel.getBoundingClientRect().bottom <= r.bottom + 2, questionOverflow: !!q && q.scrollHeight > q.clientHeight + 2 };
     }),
     ca: (() => { const el = document.querySelector('.paper.c3 .current'); if (!el) return null; return { heading: el.querySelector('.q-subject')?.textContent, options: el.querySelectorAll('.ca-option').length, gridColumn: getComputedStyle(el).gridColumn, minHeight: getComputedStyle(el).minHeight }; })(),
-    pageErrors: errors
-  }));
+    pageErrors
+  }), errors);
   assert.equal(class3.pages.length, 2, 'Class 3 must remain duplex');
   assert.deepEqual(class3.pages.map((p) => p.panelCount), [2, 2], 'Class 3 must also receive two drawings per side');
   assert.ok(class3.pages.every((p) => p.panelInsidePage && !p.questionOverflow), 'Class 3 drawing panels and questions must fit A4');
